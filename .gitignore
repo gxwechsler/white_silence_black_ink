@@ -1,0 +1,18 @@
+# Build output
+dist/
+
+# Secrets
+config/secrets.env
+*.pem
+*.key
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

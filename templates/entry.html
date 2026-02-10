@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>white_silence_black_ink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 10% 0;
+    }
+
+    .site-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: lowercase;
+      color: #6b6b6b;
+    }
+
+    .header a {
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      color: #6b6b6b;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    .header a:hover {
+      border-bottom-color: #6b6b6b;
+    }
+
+    .surface {
+      flex: 1;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 20vh;
+      background: rgba(0, 0, 0, 0.025);
+      box-shadow: 0 0 40px 10px rgba(0, 0, 0, 0.015);
+    }
+
+    .spheres-container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10%;
+    }
+
+    .sphere-link {
+      display: block;
+      text-decoration: none;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .sphere {
+      border-radius: 50%;
+      background: radial-gradient(
+        ellipse 35% 35% at 30% 25%,
+        #555 0%,
+        #1a1a1a 40%,
+        #0a0a0a 100%
+      );
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .sphere::before {
+      content: '';
+      position: absolute;
+      top: 8%;
+      left: 18%;
+      width: 25%;
+      height: 20%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(255,255,255,0.3) 0%,
+        rgba(255,255,255,0) 70%
+      );
+      border-radius: 50%;
+    }
+
+    .sphere::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 20%;
+      bottom: -25%;
+      left: 15%;
+      background: radial-gradient(
+        ellipse 50% 50% at center,
+        rgba(0,0,0,0.3) 0%,
+        rgba(0,0,0,0.12) 40%,
+        rgba(0,0,0,0) 70%
+      );
+      border-radius: 50%;
+      filter: blur(8px);
+    }
+
+    .sphere-large {
+      width: 90px;
+      height: 90px;
+    }
+
+    .sphere-large::after {
+      filter: blur(10px);
+    }
+
+    .sphere-small {
+      width: 65px;
+      height: 65px;
+    }
+
+    .sphere-small::after {
+      filter: blur(6px);
+    }
+
+    .sphere-link:hover .sphere {
+      transform: translateY(-3px);
+      background: radial-gradient(
+        ellipse 35% 35% at 30% 25%,
+        #666 0%,
+        #2a2a2a 40%,
+        #1a1a1a 100%
+      );
+    }
+
+    .sphere-link:hover .sphere::after {
+      opacity: 0.8;
+    }
+
+    .footer {
+      width: 100%;
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    .footer span {
+      font-size: 0.5rem;
+      letter-spacing: 0.15em;
+      color: #6b6b6b;
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        padding: 1.5rem 5% 0;
+      }
+      .spheres-container {
+        padding: 0 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <span class="site-title">white_silence_black_ink</span>
+    <a href="blog.html#about">about</a>
+  </header>
+
+  <div class="surface">
+    <div class="spheres-container">
+      <a href="ripple.html" class="sphere-link">
+        <div class="sphere sphere-large"></div>
+      </a>
+      <a href="ripple.html" class="sphere-link">
+        <div class="sphere sphere-small"></div>
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>gxwechsler</span>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ siteTitle }}</title>
+  <meta name="description" content="{{ siteDescription }}">
+  <link rel="stylesheet" href="{{ baseUrl }}/styles/main.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav>
+      <span class="site-name">{{ siteTitle }}</span>
+      <a href="{{ baseUrl }}/about.html">About</a>
+    </nav>
+    <p class="site-description">{{ siteDescription }}</p>
+  </header>
+
+  <main>
+    <ol class="post-list">
+      {{#each posts}}
+      <li class="post-entry">
+        <a href="{{ this.url }}">
+          <h2>{{ this.title }}</h2>
+          <time datetime="{{ this.dateISO }}">{{ this.date }}</time>
+        </a>
+        <p class="post-excerpt">{{ this.excerpt }}</p>
+      </li>
+      {{/each}}
+    </ol>
+  </main>
+
+  <footer class="site-footer">
+    <span class="copyright">© 2026 Guillermo Wechsler</span>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>white_silence_black_ink</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono&display=swap');
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #3a3a3a;
+    --mid: #6b6b6b;
+    --light: #999;
+    --faint: #bbb;
+    --ghost: #e5e5e5;
+    --white: #fafafa;
+    --indigo: #1a1a4e;
+    --font-body: 'Libre Franklin', sans-serif;
+    --font-display: 'Space Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { height: 100%; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--black);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 28px 40px;
+    flex-shrink: 0;
+  }
+
+  .site-name {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    color: var(--black);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  .site-name:hover { color: var(--mid); }
+
+  nav {
+    display: flex;
+    gap: 28px;
+    align-items: baseline;
+  }
+
+  nav a, nav button {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--light);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.35s ease;
+  }
+
+  nav a:hover, nav button:hover { color: var(--black); }
+
+  nav .sep {
+    font-size: 11px;
+    color: var(--ghost);
+    user-select: none;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+  }
+
+  .view {
+    width: 100%;
+    max-width: 700px;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .view.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .cloud-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 140px);
+  }
+
+  .tag-cloud {
+    text-align: center;
+    line-height: 2.8;
+    padding: 40px 0;
+  }
+
+  .tag-cloud a {
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 6px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    font-family: var(--font-body);
+  }
+
+  .tag-cloud:hover a { opacity: 0.18; }
+  .tag-cloud a:hover { opacity: 1 !important; }
+
+  .tag-list-view { padding: 80px 0 60px; }
+
+  .tag-list-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 56px;
+  }
+
+  .tag-list-title {
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+
+  .back-link {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--light);
+    text-decoration: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+  }
+
+  .back-link:hover { color: var(--black); }
+
+  .post-entry {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--ghost);
+  }
+
+  .post-entry:last-child { border-bottom: none; }
+
+  .post-entry-date {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--faint);
+    letter-spacing: 0.05em;
+    margin-bottom: 5px;
+  }
+
+  .post-entry-title {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--black);
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1.6;
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    text-align: left;
+    padding: 0;
+    transition: color 0.3s ease;
+  }
+
+  .post-entry-title:hover { color: var(--indigo); }
+
+  .post-entry-tags { margin-top: 10px; }
+
+  .post-entry-tags a {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--faint);
+    text-decoration: none;
+    margin-right: 14px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .post-entry-tags a:hover { color: var(--black); }
+
+  .slot-indicator {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--faint);
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .slot-indicator.s1 { background: var(--black); }
+  .slot-indicator.s2 { background: var(--dark); }
+  .slot-indicator.s3 { background: var(--mid); }
+  .slot-indicator.s4 { background: var(--light); }
+  .slot-indicator.s5 { background: var(--faint); }
+
+  .post-view { padding: 80px 0 60px; }
+
+  .post-meta-date {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--faint);
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .post-title {
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 48px;
+    letter-spacing: 0.01em;
+  }
+
+  .post-body {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--dark);
+    margin-bottom: 56px;
+    max-width: 580px;
+  }
+
+  .post-body p { margin-bottom: 24px; }
+  .post-body p:last-child { margin-bottom: 0; }
+
+  .post-dedication {
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--mid);
+    margin-top: 32px;
+  }
+
+  .post-dedication a {
+    color: var(--mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ghost);
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .post-dedication a:hover {
+    color: var(--indigo);
+    border-bottom-color: var(--indigo);
+  }
+
+  .post-tags-section {
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--ghost);
+  }
+
+  .post-tags-label {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    margin-bottom: 12px;
+  }
+
+  .post-tag-slots { display: flex; gap: 24px; flex-wrap: wrap; }
+
+  .post-tag-slot a {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--mid);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .post-tag-slot a:hover { color: var(--indigo); }
+
+  .post-downloads {
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--ghost);
+  }
+
+  .post-downloads-label {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    margin-bottom: 12px;
+  }
+
+  .download-link {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--mid);
+    text-decoration: none;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+  }
+
+  .download-link:hover { color: var(--black); }
+  .download-link::before { content: '↓ '; font-size: 10px; }
+
+  .license-note {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--faint);
+    margin-top: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .comments-section { margin-bottom: 48px; }
+
+  .comments-label {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    margin-bottom: 20px;
+  }
+
+  .comment {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--ghost);
+  }
+
+  .comment:last-child { border-bottom: none; }
+
+  .comment-meta {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--faint);
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .comment-body {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--dark);
+  }
+
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 40px;
+    border-top: 1px solid var(--ghost);
+  }
+
+  .post-nav button {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--light);
+    text-decoration: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+  }
+
+  .post-nav button:hover { color: var(--black); }
+
+  .about-view { padding: 80px 0 60px; }
+
+  .about-title {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 48px;
+    letter-spacing: 0.01em;
+  }
+
+  .about-body {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--dark);
+    max-width: 540px;
+  }
+
+  .archive-view { padding: 80px 0 60px; }
+
+  .archive-title {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 12px;
+    letter-spacing: 0.01em;
+  }
+
+  .archive-subtitle {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--light);
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+
+  .archive-empty { font-size: 13px; font-weight: 300; color: var(--faint); }
+
+  .unlinked-view { padding: 80px 0 60px; }
+
+  .unlinked-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 48px;
+    letter-spacing: 0.01em;
+  }
+
+  .unlinked-entry {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--ghost);
+  }
+
+  .unlinked-entry:last-child { border-bottom: none; }
+
+  .unlinked-meta {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--faint);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  .unlinked-meta a {
+    color: var(--light);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .unlinked-meta a:hover { color: var(--black); }
+
+  .unlinked-text {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--mid);
+  }
+
+  .unlinked-empty { font-size: 13px; font-weight: 300; color: var(--faint); }
+
+  footer {
+    padding: 28px 40px;
+    flex-shrink: 0;
+  }
+
+  footer span {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+    text-transform: lowercase;
+  }
+
+  .comment-contact {
+    margin-top: 24px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--faint);
+    letter-spacing: 0.04em;
+  }
+
+  .comment-contact a {
+    color: var(--light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .comment-contact a:hover { color: var(--black); }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--ghost); border-radius: 2px; }
+
+  @media (max-width: 640px) {
+    header { padding: 20px 24px; }
+    main { padding: 0 24px; }
+    footer { padding: 20px 24px; }
+    nav { gap: 18px; }
+    .tag-cloud { line-height: 2.4; }
+    .post-title { font-size: 18px; }
+    .post-body { font-size: 13px; }
+    .post-nav { flex-direction: column; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="site-name" onclick="navigate('cloud')">white_silence_black_ink</button>
+  <nav>
+    <a onclick="navigate('archive')" id="navArchive">archive</a>
+    <span class="sep">·</span>
+    <a onclick="navigate('about')" id="navAbout">about</a>
+    <span class="sep">·</span>
+    <button onclick="toggleLang()" id="langToggle">ES</button>
+  </nav>
+</header>
+
+<main>
+  <div class="view active" id="viewCloud">
+    <div class="cloud-container">
+      <div class="tag-cloud" id="tagCloud"></div>
+    </div>
+  </div>
+
+  <div class="view" id="viewTagList">
+    <div class="tag-list-view">
+      <div class="tag-list-header">
+        <span class="tag-list-title" id="tagListTitle"></span>
+        <button class="back-link" onclick="navigate('cloud')" id="backCloud">← all tags</button>
+      </div>
+      <div id="tagListItems"></div>
+    </div>
+  </div>
+
+  <div class="view" id="viewPost">
+    <div class="post-view" id="postContent"></div>
+  </div>
+
+  <div class="view" id="viewAbout">
+    <div class="about-view">
+      <div class="about-title" id="aboutTitle">about</div>
+      <div class="about-body" id="aboutBody"></div>
+    </div>
+  </div>
+
+  <div class="view" id="viewArchive">
+    <div class="archive-view">
+      <div class="archive-title" id="archiveTitle">archive</div>
+      <div class="archive-subtitle" id="archiveSubtitle">posts no longer in the cloud</div>
+      <div id="archiveItems"></div>
+    </div>
+  </div>
+
+  <div class="view" id="viewUnlinked">
+    <div class="unlinked-view">
+      <div class="unlinked-title" id="unlinkedTitle">unlinked_comments</div>
+      <div id="unlinkedItems"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>gxwechsler</span>
+</footer>
+
+<script>
+const SLOT_WEIGHTS = [5, 4, 3, 2, 1];
+const posts = /*__POSTS_JSON__*/;
+const unlinkedComments = /*__UNLINKED_JSON__*/;
+const aboutText = /*__ABOUT_JSON__*/;
+
+const labels = {
+  en: {
+    archive: 'archive', about: 'about', allTags: '← all tags',
+    backHome: '← home', backTag: '← back to', tags: 'tags',
+    download: 'download', comments: 'comments',
+    noComments: 'no comments yet', noPosts: 'no posts yet',
+    archiveSubtitle: 'posts no longer in the cloud',
+    archiveEmpty: 'nothing here yet',
+    unlinkedEmpty: 'no unlinked comments', langToggle: 'ES',
+    contactLine: 'questions or comments →'
+  },
+  es: {
+    archive: 'archivo', about: 'acerca', allTags: '← todas las etiquetas',
+    backHome: '← inicio', backTag: '← volver a', tags: 'etiquetas',
+    download: 'descargar', comments: 'comentarios',
+    noComments: 'sin comentarios aún', noPosts: 'sin publicaciones aún',
+    archiveSubtitle: 'publicaciones fuera de la nube',
+    archiveEmpty: 'nada aquí aún',
+    unlinkedEmpty: 'sin comentarios desenlazados', langToggle: 'EN',
+    contactLine: 'preguntas o comentarios →'
+  }
+};
+
+let currentLang = 'en', currentView = 'cloud', currentTagKey = null, lastTagKey = null;
+
+const CONTACT_EMAIL = '/*__CONTACT_EMAIL__*/';
+
+function computeTagWeights() {
+  const weights = {};
+  posts.filter(p => !p.archived).forEach(post => {
+    post.slots.forEach((slotTags, si) => {
+      slotTags.forEach(tag => {
+        const k = tag.toLowerCase();
+        weights[k] = (weights[k] || 0) + SLOT_WEIGHTS[si];
+      });
+    });
+  });
+  if (unlinkedComments.length > 0)
+    weights['unlinked_comments'] = Math.max(1, Math.floor(unlinkedComments.length / 2));
+  return weights;
+}
+
+function getTagLabel(key) { return key; }
+
+const SIZE_MIN = 11, SIZE_MAX = 36;
+
+function renderCloud() {
+  const weights = computeTagWeights();
+  const keys = Object.keys(weights);
+  if (!keys.length) return;
+  const vals = Object.values(weights);
+  const wMin = Math.min(...vals), wMax = Math.max(...vals), range = wMax - wMin || 1;
+  const shuffled = keys.sort(() => Math.random() - 0.5);
+  document.getElementById('tagCloud').innerHTML = shuffled.map(key => {
+    const ratio = (weights[key] - wMin) / range;
+    const size = SIZE_MIN + ratio * (SIZE_MAX - SIZE_MIN);
+    const ch = Math.round(187 - ratio * (187 - 10));
+    const color = `rgb(${ch},${ch},${ch})`;
+    const fw = ratio > 0.7 ? 500 : ratio > 0.35 ? 400 : 300;
+    if (key === 'unlinked_comments')
+      return `<a data-key="${key}" style="font-size:${size.toFixed(1)}px;color:${color};font-weight:${fw};" onclick="navigate('unlinked')">${key}</a>`;
+    return `<a data-key="${key}" style="font-size:${size.toFixed(1)}px;color:${color};font-weight:${fw};" onclick="showTag('${key}')">${key}</a>`;
+  }).join('\n');
+}
+
+function getPostsForTag(tagKey) {
+  const results = [];
+  posts.filter(p => !p.archived).forEach(post => {
+    let best = -1;
+    post.slots.forEach((st, si) => { if (st.some(t => t.toLowerCase() === tagKey) && (best === -1 || si < best)) best = si; });
+    if (best !== -1) results.push({ post, slot: best });
+  });
+  return results.sort((a, b) => a.slot - b.slot);
+}
+
+function renderTagList(tagKey) {
+  const l = labels[currentLang];
+  document.getElementById('tagListTitle').textContent = tagKey;
+  document.getElementById('backCloud').textContent = l.allTags;
+  const results = getPostsForTag(tagKey);
+  const c = document.getElementById('tagListItems');
+  if (!results.length) { c.innerHTML = `<p style="font-size:13px;font-weight:300;color:var(--faint);">${l.noPosts}</p>`; return; }
+  c.innerHTML = results.map(({ post }) => {
+    const title = post.title[currentLang] || post.title.en;
+    const tags = post.slots.flat().map(t => t.toLowerCase());
+    const tagsHtml = tags.map(t => {
+      const si = post.slots.findIndex(s => s.some(x => x.toLowerCase() === t));
+      return `<a onclick="showTag('${t}')"><span class="slot-indicator s${si+1}"></span>${t}</a>`;
+    }).join('');
+    return `<div class="post-entry"><div class="post-entry-date">${post.date}</div><button class="post-entry-title" onclick="showPost('${post.id}','${tagKey}')">${title}</button><div class="post-entry-tags">${tagsHtml}</div></div>`;
+  }).join('');
+}
+
+function renderPost(postId, fromTag) {
+  const post = posts.find(p => p.id === postId); if (!post) return;
+  const l = labels[currentLang];
+  const title = post.title[currentLang] || post.title.en;
+  const body = post.body[currentLang] || post.body.en;
+  const ded = post.dedication ? (post.dedication[currentLang] || post.dedication.en) : null;
+  const slotsHtml = post.slots.map(st => st.length ? st.map(t => `<span class="post-tag-slot"><a onclick="showTag('${t.toLowerCase()}')">${t.toLowerCase()}</a></span>`).join('') : '').join('');
+  let dlHtml = '';
+  if (post.downloads && (post.downloads.en || post.downloads.es))
+    dlHtml = `<div class="post-downloads"><div class="post-downloads-label">${l.download}</div>${post.downloads.en ? `<a class="download-link" href="${post.downloads.en}">PDF (EN)</a>` : ''}${post.downloads.es ? `<a class="download-link" href="${post.downloads.es}">PDF (ES)</a>` : ''}<div class="license-note">${post.license}</div></div>`;
+  const cmHtml = post.comments.length ? post.comments.map(c => `<div class="comment"><div class="comment-meta">${c.author} · ${c.date}</div><div class="comment-body">${c.text}</div></div>`).join('') : `<p style="font-size:12px;font-weight:300;color:var(--faint);">${l.noComments}</p>`;
+  document.getElementById('postContent').innerHTML = `
+    <div class="post-meta-date">${post.date}</div><div class="post-title">${title}</div>
+    <div class="post-body">${body}${ded ? `<div class="post-dedication">${ded}</div>` : ''}</div>
+    <div class="post-tags-section"><div class="post-tags-label">${l.tags}</div><div class="post-tag-slots">${slotsHtml}</div></div>
+    ${dlHtml}<div class="comments-section"><div class="comments-label">${l.comments}</div>${cmHtml}<div class="comment-contact">${l.contactLine} <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></div></div>
+    <div class="post-nav"><button onclick="navigate('cloud')">${l.backHome}</button>${fromTag ? `<button onclick="showTag('${fromTag}')">${l.backTag} ${fromTag}</button>` : ''}</div>`;
+}
+
+function renderArchive() {
+  const l = labels[currentLang];
+  document.getElementById('archiveTitle').textContent = l.archive;
+  document.getElementById('archiveSubtitle').textContent = l.archiveSubtitle;
+  const a = posts.filter(p => p.archived), c = document.getElementById('archiveItems');
+  if (!a.length) { c.innerHTML = `<p class="archive-empty">${l.archiveEmpty}</p>`; return; }
+  c.innerHTML = a.map(p => `<div class="post-entry"><div class="post-entry-date">${p.date}</div><button class="post-entry-title" onclick="showPost('${p.id}',null)">${p.title[currentLang]||p.title.en}</button></div>`).join('');
+}
+
+function renderUnlinked() {
+  document.getElementById('unlinkedTitle').textContent = 'unlinked_comments';
+  const l = labels[currentLang], c = document.getElementById('unlinkedItems');
+  if (!unlinkedComments.length) { c.innerHTML = `<p class="unlinked-empty">${l.unlinkedEmpty}</p>`; return; }
+  c.innerHTML = unlinkedComments.map(dc => {
+    const p = posts.find(x => x.id === dc.postId);
+    return `<div class="unlinked-entry"><div class="unlinked-meta">${dc.author} · ${dc.date} · re: <a onclick="showPost('${dc.postId}',null)">${p?(p.title[currentLang]||p.title.en):dc.postId}</a></div><div class="unlinked-text">${dc.text}</div></div>`;
+  }).join('');
+}
+
+function renderAbout() {
+  const l = labels[currentLang];
+  document.getElementById('aboutTitle').textContent = l.about;
+  document.getElementById('aboutBody').textContent = aboutText[currentLang];
+}
+
+function navigate(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  currentView = view;
+  switch(view) {
+    case 'cloud': renderCloud(); document.getElementById('viewCloud').classList.add('active'); break;
+    case 'tagList': document.getElementById('viewTagList').classList.add('active'); break;
+    case 'post': document.getElementById('viewPost').classList.add('active'); break;
+    case 'about': renderAbout(); document.getElementById('viewAbout').classList.add('active'); break;
+    case 'archive': renderArchive(); document.getElementById('viewArchive').classList.add('active'); break;
+    case 'unlinked': renderUnlinked(); document.getElementById('viewUnlinked').classList.add('active'); break;
+  }
+  window.scrollTo(0, 0);
+}
+
+function showTag(k) { currentTagKey = k; lastTagKey = k; renderTagList(k); navigate('tagList'); }
+function showPost(id, ft) { renderPost(id, ft); navigate('post'); }
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'es' : 'en';
+  const l = labels[currentLang];
+  document.getElementById('navArchive').textContent = l.archive;
+  document.getElementById('navAbout').textContent = l.about;
+  document.getElementById('langToggle').textContent = l.langToggle;
+  navigate(currentView);
+}
+
+renderCloud();
+</script>
+</body>
+</html>

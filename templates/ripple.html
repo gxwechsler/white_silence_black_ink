@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>white_silence_black_ink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Libre Franklin', sans-serif;
+            font-weight: 300;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #0a0a0a;
+            background: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 50vw;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .site-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: lowercase;
+            color: #6b6b6b;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6ch;
+        }
+
+        .column {
+            max-width: 22ch;
+        }
+
+        .column.english {
+            text-align: left;
+        }
+
+        .column.spanish {
+            text-align: right;
+        }
+
+        .column p {
+            margin-bottom: 0;
+        }
+
+        .lang-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #6b6b6b;
+            margin-bottom: 0.75rem;
+        }
+
+        .ripple-text {
+            filter: url(#ripple-filter);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .footer a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.1em;
+            color: #6b6b6b;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .footer a:hover {
+            border-bottom-color: #6b6b6b;
+        }
+
+        .svg-filters {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 90vw;
+                height: auto;
+                padding: 2rem 0;
+            }
+            .bilingual {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .column.english,
+            .column.spanish {
+                text-align: left;
+                max-width: 30ch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <svg class="svg-filters">
+        <defs>
+            <filter id="ripple-filter" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence
+                    id="turbulence"
+                    type="turbulence"
+                    baseFrequency="0.015 0.02"
+                    numOctaves="1"
+                    seed="5"
+                    result="noise"
+                />
+                <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="noise"
+                    scale="6"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="container">
+        <header class="header">
+            <div class="site-title">white_silence_black_ink</div>
+        </header>
+
+        <main class="bilingual ripple-text">
+<!-- __ORIGIN_HTML__ -->
+        </main>
+
+        <footer class="footer">
+            <a href="clean.html">stop ripple</a>
+            <a href="blog.html">enter →</a>
+        </footer>
+    </div>
+
+    <script>
+        const turbulence = document.getElementById('turbulence');
+        let time = 0;
+
+        function animateRipple() {
+            time += 0.008;
+            const bfX = 0.015 + Math.sin(time) * 0.008;
+            const bfY = 0.02 + Math.cos(time * 0.7) * 0.008;
+            turbulence.setAttribute('baseFrequency', `${bfX} ${bfY}`);
+            turbulence.setAttribute('seed', Math.floor(time * 8) % 100);
+            requestAnimationFrame(animateRipple);
+        }
+
+        animateRipple();
+    </script>
+</body>
+</html>
