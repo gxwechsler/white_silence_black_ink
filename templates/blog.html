@@ -731,7 +731,7 @@ function renderUnlinked() {
 function renderAbout() {
   const l = labels[currentLang];
   document.getElementById('aboutTitle').textContent = l.about;
-  document.getElementById('aboutBody').textContent = aboutText[currentLang];
+  document.getElementById('aboutBody').innerHTML = aboutText[currentLang];
 }
 
 function navigate(view) {
