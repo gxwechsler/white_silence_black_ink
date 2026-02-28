@@ -7,17 +7,34 @@
   "date": "2026-02-28",
   "archived": false,
   "slots": [
-    ["suffering", "duḥkha"],
-    ["antigone", "shoshin"],
-    ["phenomenology", "entropy"],
-    ["sacrifice", "temporality"],
-    ["yupanqui", "zen"]
+    [
+      "suffering",
+      "duḥkha"
+    ],
+    [
+      "antigone",
+      "shoshin"
+    ],
+    [
+      "phenomenology",
+      "entropy"
+    ],
+    [
+      "sacrifice",
+      "temporality"
+    ],
+    [
+      "yupanqui",
+      "zen"
+    ]
   ],
   "dedication": {
     "en": "for the Wednesday reading group at Berkeley Zen Center",
     "es": "para el grupo de lectura de los miércoles en el Berkeley Zen Center"
   },
-  "downloads": {},
+  "downloads": {
+    "en": "assets/downloads/The_Bad_Axle-Hole_20260227.pdf"
+  },
   "license": "CC BY-NC 4.0",
   "comments": [],
   "body": {
